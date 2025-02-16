@@ -16,6 +16,13 @@ application {
     mainClassName = 'micropolisj.Micropolis'
 }
 
+
+dependencies {
+    implementation 'net.sf.py4j:py4j:0.10.9.9' // Use the latest Py4J version available
+}
+
+
+
 /*githubRelease {
 	token getProperty('github.token')
 	owner 'softwarecreator'

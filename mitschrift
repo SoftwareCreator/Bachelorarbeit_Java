@@ -36,3 +36,10 @@ Introduction
 Background:
 Digital model, digital shadow, digital twin
 
+
+1.) Architektur festlegen
+  * frontend backend kommunikation
+    * socket? (rpc, protobuf)
+    * rest api
+2.) Daten im frontend auslesen
+

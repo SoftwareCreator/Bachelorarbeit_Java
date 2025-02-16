@@ -35,6 +35,9 @@ import java.util.Stack;
 
 import static micropolisj.gui.MainWindow.EXTENSION;
 
+
+import py4j.GatewayServer;
+
 public class NewCityDialog extends JDialog
 {
 	private static final ResourceBundle strings = MainWindow.strings;
@@ -82,6 +85,22 @@ public class NewCityDialog extends JDialog
 		}
 		levelBox.add(Box.createVerticalGlue());
 		setGameLevel(GameLevel.MIN_LEVEL);
+
+    // test button on the map selection page
+    /*
+		Box buttonBox = new Box(BoxLayout.PAGE_AXIS);
+		buttonBox.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		p2.add(buttonBox, BorderLayout.SOUTH);
+
+		buttonBox.add(Box.createVerticalGlue());
+    JButton testbtn;
+		testbtn = new JButton("Send Message to Python");
+		testbtn.addActionListener(evt -> onSendClicked());
+		buttonBox.add(testbtn);
+		buttonBox.add(Box.createVerticalGlue());
+    */
+
+
 
 		JPanel buttonPane = new JPanel();
 		getContentPane().add(buttonPane, BorderLayout.PAGE_END);
@@ -178,6 +197,10 @@ public class NewCityDialog extends JDialog
 
 	private void startPlaying(Micropolis newEngine, File file)
 	{
+    GatewayServer gatewayServer = new GatewayServer(newEngine);
+    gatewayServer.start();
+    System.out.println("Py4J Gateway Server Started...");
+
 		MainWindow win = (MainWindow) getOwner();
 		win.setEngine(newEngine);
 		win.setCurrentFile(file);
@@ -189,8 +212,15 @@ public class NewCityDialog extends JDialog
 	{
 		engine.setGameLevel(getSelectedGameLevel());
 		engine.setFunds(GameLevel.getStartingFunds(engine.getGameLevel()));
+    System.out.println("Starting to play");
 		startPlaying(engine, null);
 	}
+
+  // Event for the test button on the map selection page
+	/*private void onSendClicked()
+	{
+    System.out.println("button pressed");
+	}*/
 
 	private void onCancelClicked()
 	{

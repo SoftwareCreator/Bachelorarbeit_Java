@@ -34,6 +34,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -901,12 +902,22 @@ public class MainWindow extends JFrame
 
 		b6.add(makeToolBtn(MicropolisTool.AIRPORT));
 
+    JButton testbtn;
+		testbtn = new JButton("Send Message to Python");
+		testbtn.addActionListener(evt -> onSendClicked());
+		toolBar.add(testbtn, BorderLayout.SOUTH);
+
 		// add glue to make all elements align toward top
 		constraints.gridy++;
 		constraints.weighty = 1.0;
 		gridBox.add(new JLabel(), constraints);
 
 		return toolBar;
+	}
+
+	private void onSendClicked()
+	{
+    System.out.println("button pressed");
 	}
 
 	private void selectTool(MicropolisTool newTool)
