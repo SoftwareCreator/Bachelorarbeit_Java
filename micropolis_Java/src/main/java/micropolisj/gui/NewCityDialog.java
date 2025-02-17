@@ -197,6 +197,8 @@ public class NewCityDialog extends JDialog
 
 	private void startPlaying(Micropolis newEngine, File file)
 	{
+    System.out.println("Micropolis instance: " + newEngine);
+
     GatewayServer gatewayServer = new GatewayServer(newEngine);
     gatewayServer.start();
     System.out.println("Py4J Gateway Server Started...");

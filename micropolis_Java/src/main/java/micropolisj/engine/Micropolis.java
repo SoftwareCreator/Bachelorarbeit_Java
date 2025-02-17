@@ -224,6 +224,11 @@ public class Micropolis
 		initTileBehaviors();
 	}
 
+  // This method is being called by the python backend 
+  public String testMethod(){
+    return "Hey, this is Java located in the Micropolis engine!!";
+  }
+
 	static boolean isTileDozeable(ToolEffectIfc eff)
 	{
 		int myTile = eff.getTile(0, 0);
