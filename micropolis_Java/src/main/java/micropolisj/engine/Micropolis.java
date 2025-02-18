@@ -1941,6 +1941,45 @@ public class Micropolis
 
 	public void animate()
 	{
+    // Sim, simtick, tick, step, simstep 
+    // this is run every simulation step.
+    System.out.println("Simulation tick happened!");
+
+    /*getCityClass()
+getCityScore()
+getTotalFunds()
+getPopDensity()
+getGameLevel()
+getCityTax()
+getPoweredZoneCount()
+getUnpoweredZoneCount()
+getRoadTotal()
+getRailTotal()
+getFirePop()
+getResZoneCount()
+getComZoneCount()
+getIndZoneCount()
+getResPop()
+getComPop()
+getIndPop()
+getHospitalCount()
+getChurchCount()
+getPoliceCount()
+getFireStationCount()
+getStadiumCount()
+getCoalCount()
+getNuclearCount()
+getSeaportCount()
+getAirportCount()
+getTotalPop()
+getCrimeAverage()
+getPollutionAverage()
+getLandValueAverage()
+getTrafficAverage()
+getBudget()
+getEvaluation()
+getPowerPlants() */
+
 		acycle = (acycle + 1) % 960;
 		if (acycle % 2 == 0) {
 			step();
