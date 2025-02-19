@@ -62,6 +62,8 @@ import static micropolisj.engine.TileConstants.isVulnerable;
 import static micropolisj.engine.TileConstants.isZoneCenter;
 import static micropolisj.engine.TileConstants.residentialZonePop;
 
+import py4j.GatewayServer;
+
 /**
  * The main simulation engine for Micropolis.
  * The front-end should call animate() periodically
@@ -216,12 +218,18 @@ public class Micropolis
 	private int fcycle; //counts simulation steps (mod 1024)
 	private Map<String, TileBehavior> tileBehaviors;
 
+  private List<Map<String, Integer>> dataLog = new ArrayList<>();
+  private int tickCounter = 0;
+
 	public Micropolis()
 	{
 		random = DEFAULT_PRNG;
 		evaluation = new CityEval(this);
 		init(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		initTileBehaviors();
+
+    //GatewayServer server = new GatewayServer(new Micropolis());
+    //server.start();
 	}
 
   // This method is being called by the python backend 
@@ -1943,42 +1951,43 @@ public class Micropolis
 	{
     // Sim, simtick, tick, step, simstep 
     // this is run every simulation step.
-    System.out.println("Simulation tick happened!");
+    //System.out.println("Simulation tick happened!");
+    Map<String, Integer> tickData = new HashMap<>();
+    tickCounter += 1;
 
-    /*getCityClass()
-getCityScore()
-getTotalFunds()
-getPopDensity()
-getGameLevel()
-getCityTax()
-getPoweredZoneCount()
-getUnpoweredZoneCount()
-getRoadTotal()
-getRailTotal()
-getFirePop()
-getResZoneCount()
-getComZoneCount()
-getIndZoneCount()
-getResPop()
-getComPop()
-getIndPop()
-getHospitalCount()
-getChurchCount()
-getPoliceCount()
-getFireStationCount()
-getStadiumCount()
-getCoalCount()
-getNuclearCount()
-getSeaportCount()
-getAirportCount()
-getTotalPop()
-getCrimeAverage()
-getPollutionAverage()
-getLandValueAverage()
-getTrafficAverage()
-getBudget()
-getEvaluation()
-getPowerPlants() */
+    tickData.put("tick", tickCounter);
+    tickData.put("cityClass", evaluation.getCityClass());
+    tickData.put("cityScore", evaluation.getCityScore());
+    tickData.put("totalFunds", budget.getTotalFunds());
+    tickData.put("gameLevel", gameLevel);
+    tickData.put("cityTax", cityTax);
+    tickData.put("poweredZoneCount", poweredZoneCount);
+    tickData.put("unpoweredZoneCount", unpoweredZoneCount);
+    tickData.put("roadTotal", roadTotal);
+    tickData.put("railTotal", railTotal);
+    tickData.put("firePop", firePop);
+    tickData.put("resZoneCount", resZoneCount);
+    tickData.put("comZoneCount", comZoneCount);
+    tickData.put("indZoneCount", indZoneCount);
+    tickData.put("resPop", resPop);
+    tickData.put("comPop", comPop);
+    tickData.put("indPop", indPop);
+    tickData.put("hospitalCount", hospitalCount);
+    tickData.put("churchCount", churchCount);
+    tickData.put("policeCount", policeCount);
+    tickData.put("fireStationCount", fireStationCount);
+    tickData.put("stadiumCount", stadiumCount);
+    tickData.put("coalCount", coalCount);
+    tickData.put("nuclearCount", nuclearCount);
+    tickData.put("seaportCount", seaportCount);
+    tickData.put("airportCount", airportCount);
+    tickData.put("totalPop", totalPop);
+    tickData.put("crimeAverage", crimeAverage);
+    tickData.put("pollutionAverage", pollutionAverage);
+    tickData.put("landValueAverage", landValueAverage);
+    tickData.put("trafficAverage", trafficAverage);
+    
+    dataLog.add(tickData);
 
 		acycle = (acycle + 1) % 960;
 		if (acycle % 2 == 0) {
@@ -1987,6 +1996,22 @@ getPowerPlants() */
 		moveObjects();
 		animateTiles();
 	}
+
+  public interface javaPyCallInt {
+    public void receiveDataFromJava(List<Map<String, Integer>> dataLog);
+  }
+
+  public void SendDataToPython(javaPyCallInt javaInt){
+    javaInt.receiveDataFromJava(dataLog);
+  }
+
+  public List<Map<String, Integer>> getDataLog() {
+    return dataLog;
+  }
+
+  public void clearData() {
+    dataLog.clear();
+  }
 
 	public Sprite[] allSprites()
 	{
